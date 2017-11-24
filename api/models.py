@@ -19,6 +19,21 @@ class ShoppingList(models.Model):
         return "{}".format(self.name)
 
 
+class Items(models.Model):
+    """This class represents the Shopping List Items model"""
+    name = models.CharField(blank=False, max_length=255, unique=True)
+    shoppinglist = models.ForeignKey(ShoppingList,
+                                     related_name='items',
+                                     on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+    bought = models.BooleanField(default=False)
+
+    def __str__(self):
+        """Returns a human readable representation of the items model"""
+        return "{}".format(self.name)
+
+
 # Handles token creation when a new user is created
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
