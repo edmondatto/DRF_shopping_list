@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import serializers
+from rest_framework import serializers, pagination
 from .models import ShoppingList, Items
 
 
@@ -45,3 +45,9 @@ class UserSerializer(serializers.ModelSerializer):
         new_user.set_password(validated_data['password'])
         new_user.save()
         return new_user
+
+
+class ResultPagination(pagination.PageNumberPagination):
+    page_size = 10
+    max_page_size = 20
+    page_size_query_param = 'per_page'
