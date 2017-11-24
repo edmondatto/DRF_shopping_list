@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from .models import ShoppingList
+from .models import ShoppingList, Items
 
 
 class IsOwner(BasePermission):
@@ -9,5 +9,9 @@ class IsOwner(BasePermission):
         """A function that returns True if the user has been granted access to an object"""
         if isinstance(obj, ShoppingList):
             return obj.owner == request.user
-        return obj.owner == request.user
-
+        elif isinstance(obj, Items):
+            shopping_list = ShoppingList.objects.get(id=obj.shoppinglist.id)
+            if shopping_list:
+                return True
+            else:
+                return False
